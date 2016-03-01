@@ -1,0 +1,223 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+//Copies values from on array to anther
+void copyArr(int* arraySrc, int* arrayTo, int size){
+    
+    int i;
+    for(i = 0; i < size; i++){
+        arrayTo[i] = arraySrc[i];
+    }
+}
+
+
+//Selection Sort function
+void sort(int *arr, int size){
+    
+    int position = 0;
+    int temp = 0;
+    int move;
+    
+    for(move = 0; move < size-1; move++){
+        
+        position = move;
+        
+        for (int i = move+1; i < size; i++)
+        {
+            if ( arr[i] < arr[position]) {
+                position = i;
+            }
+        }
+        
+        if(position != move)
+        {
+            temp = arr[move];
+            arr[move] = arr[position];
+            arr[position] = temp;
+        }
+    } 
+}
+
+
+//Linear search on array
+int linearSearch(int *arr, int size, int value, int* count){
+    
+    int pos = 0;
+    int comp = 0;
+    
+    for(int i= 0; i< size; i++){
+        
+        comp++;
+        
+        if(arr[i] == value)
+        {
+            pos = i;
+            break;
+        }
+    }
+    
+    *count = comp;
+    
+    return pos;
+}
+
+
+//Binary search on array
+int binSearch (int *arr, int size, int value, int* count){
+    
+    int pos = 0;
+    int comp = 0;
+    
+    int start = 0;
+    int end = size;
+    int middle = 0;
+    
+    
+    while(start <= end)
+    {
+        comp++;
+        middle = (start + end) / 2;
+        
+        if(arr[middle] < value)
+        {
+            start = middle + 1;
+        }
+        else if(arr[middle] == value)
+        {    
+            pos = middle;
+            break;
+        }
+        else
+        {
+            end = middle -1;
+        }
+    }
+    
+    *count = comp;
+    
+    return pos;
+}
+
+
+//Test print array
+void printArr(int *array, int size) {
+
+    for(int i = 0; i < size; i++) {
+        printf("%d ", array[i]);
+    }
+    printf("\n");
+}
+
+
+int main(int argc, char **argv){
+    
+    const int MAX_NUM = 1000;
+
+    int arr[MAX_NUM];
+    int arr2[MAX_NUM];
+    int endVal = -999;
+    int val = 0;
+    int count = 0;
+    int position = 0;
+    int comp = 0;
+    
+    
+    //Stores values in dynamically allocated array
+    while (val != -999)
+    {
+        scanf("%d", &val);
+        
+        //test print
+        //printf("%d\n", val);
+        
+        if(endVal == val){
+            break;
+        }
+        
+        arr[count] = val;
+        
+        count++;
+        
+    }
+    
+    if(count == 0){
+        printf("The value of value is not found in the array ");
+    }
+   
+    //Print array 1
+    printf("Array 1 is: ");
+    printArr(arr, count);
+    printf("\n");
+    
+
+    //Copy array
+    copyArr(arr, arr2, count);
+    
+    
+    //Print array 2
+    printf("Array 2 is: ");
+    printArr(arr, count);
+    printf("\n");
+    
+    
+    //Sort Array 2
+    sort(arr2, count);
+    
+    
+    //Print array 2
+    printf("Sorted Array 2 is: ");
+    printArr(arr2, count);
+    printf("\n");
+    
+    
+    while(arr[count] != -999){
+        
+        printf("Search Comparisions: \n");
+        scanf("%d", &val);
+        
+        //LINEAR SEARCH
+        printf("LINEAR SEARCH: \n");
+        
+        position = linearSearch(arr, count, val, &comp);
+        
+        if(position != 0){
+            printf("The number %d is in the unsorted array at position: %d\n", val, position);
+            printf("Number of comparisons: %d \n", comp);
+        }
+        printf("\n");
+        
+        
+        //BINARY SEARCH
+        comp = 0;
+        position = 0;
+        
+        printf("BINARY SEARCH: \n");
+        position = binSearch(arr2, count, val, &comp);
+        
+        if(position != 0){
+            printf("The number %d is in the sorted array at position: %d\n", val, position);
+            printf("Number of comparisons: %d \n", comp);
+        }
+        printf("========================");
+        printf("\n");
+        
+        
+        if(position == 0){
+            printf("The value of %d value is not found in the file \n", val);
+            printf("Number of comparisons: %d \n", comp);
+        }
+        printf("\n");
+        
+        if(endVal == val){
+            break;
+        }
+        
+        count++;
+         
+    }
+    
+    
+    return 0;
+}
+// end of program
